@@ -62,12 +62,13 @@ class _RegisterViewState extends State<RegisterView> {
               final password = _password.text;
 
               try {
-                UserCredential userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
                   await showErrorDialog(
@@ -107,7 +108,7 @@ class _RegisterViewState extends State<RegisterView> {
               );
             },
             child: const Text('Already registered? Login here!'),
-          )
+          ),
         ],
       ),
     );
