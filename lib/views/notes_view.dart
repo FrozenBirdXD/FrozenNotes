@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:frozennotes/constants/routes.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -13,7 +14,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'), 
+        title: const Text('Home'),
         actions: [
           PopupMenuButton<MenuButtons>(
             onSelected: (value) async {
@@ -22,8 +23,10 @@ class _NotesViewState extends State<NotesView> {
                   final logout = await showSignOutDialog(context);
                   if (logout) {
                     await FirebaseAuth.instance.signOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil('/login/', 
-                    (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginRoute,
+                      (_) => false,
+                    );
                   }
                   break;
               }
@@ -61,13 +64,15 @@ Future<bool> showSignOutDialog(BuildContext context) {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(true);
-            }, 
+            },
             child: const Text('Sign out'),
           ),
         ],
       );
-    }
-  ).then((value) => value ?? false);
+    },
+  ).then(
+    (value) => value ?? false,
+  );
 }
 
 enum MenuButtons { logout }
