@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:frozennotes/firebase_options.dart';
 import 'package:frozennotes/services/auth/auth_exceptions.dart';
 import 'package:frozennotes/services/auth/auth_provider.dart';
 import 'package:frozennotes/services/auth/auth_user.dart';
@@ -20,7 +22,7 @@ class FirebaseAuthProvider implements AuthProvider {
       if (user != null) {
         return user;
       } else {
-        throw UserNotLoggedInAuthExpections();
+        throw UserNotLoggedInAuthExpection();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -61,13 +63,13 @@ class FirebaseAuthProvider implements AuthProvider {
       if (user != null) {
         return user;
       } else {
-        throw UserNotLoggedInAuthExpections();
+        throw UserNotLoggedInAuthExpection();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw UserNotFoundAuthException();
       } else if (e.code == 'wrong-password') {
-        throw WrongPasswordAuthException(); 
+        throw WrongPasswordAuthException();
       } else if (e.code == 'invalid-email') {
         throw InvalidEmailAuthException();
       } else {
@@ -84,7 +86,7 @@ class FirebaseAuthProvider implements AuthProvider {
     if (user != null) {
       await FirebaseAuth.instance.signOut();
     } else {
-      throw UserNotLoggedInAuthExpections();
+      throw UserNotLoggedInAuthExpection();
     }
   }
 
@@ -94,7 +96,14 @@ class FirebaseAuthProvider implements AuthProvider {
     if (user != null) {
       await user.sendEmailVerification();
     } else {
-      throw UserNotLoggedInAuthExpections();
+      throw UserNotLoggedInAuthExpection();
     }
+  }
+
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 }
