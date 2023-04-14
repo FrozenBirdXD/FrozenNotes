@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frozennotes/constants/routes.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/views/login_view.dart';
-import 'package:frozennotes/views/notes_view.dart';
+import 'package:frozennotes/views/notes/notes_view.dart';
 import 'package:frozennotes/views/register_view.dart';
 import 'package:frozennotes/views/verify_email_view.dart';
 import 'dart:developer' as devtools show log;
