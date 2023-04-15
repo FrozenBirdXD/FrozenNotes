@@ -43,7 +43,7 @@ class NotesService {
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   // singleton for notesservice
-  static final NotesService _shared =  NotesService._sharedInstance();
+  static final NotesService _shared = NotesService._sharedInstance();
   NotesService._sharedInstance();
   factory NotesService() => _shared;
 
@@ -69,17 +69,22 @@ class NotesService {
     required DatabaseNote note,
     required String text,
   }) async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // checks if note already exists
     await getNote(id: note.id);
 
     // update note in db
-    final updatesCount = await db.update(noteTable, {
-      textColumn: text,
-      isSyncedWithCloudColumn: 0,
-    });
+    final updatesCount = await db.update(
+      noteTable,
+      {
+        textColumn: text,
+        isSyncedWithCloudColumn: 0,
+      },
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
 
     // get the updated note and put in cache and return
     if (updatesCount == 0) {
@@ -94,8 +99,8 @@ class NotesService {
   }
 
   Future<Iterable<DatabaseNote>> getAllNotes() async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // get all notes in db
     final notes = await db.query(
@@ -106,8 +111,8 @@ class NotesService {
   }
 
   Future<DatabaseNote> getNote({required int id}) async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // search for note with id in db
     final notes = await db.query(
@@ -140,8 +145,8 @@ class NotesService {
   }
 
   Future<void> deleteNote({required int id}) async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // delete note from db with id
     final deletedCount = await db.delete(
@@ -159,8 +164,8 @@ class NotesService {
   }
 
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // get user and checks if id is correct -> owner
     final dbUser = await getUser(email: owner.email);
@@ -192,8 +197,8 @@ class NotesService {
   }
 
   Future<DatabaseUser> getUser({required String email}) async {
-    final db = _getDatabaseOrThrow();
     await _ensureDbIsOpen();
+    final db = _getDatabaseOrThrow();
 
     // query db for user
     final results = await db.query(
