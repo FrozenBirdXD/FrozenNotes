@@ -86,15 +86,22 @@ class _NotesViewState extends State<NotesView> {
                   snapshot,
                 ) {
                   switch (snapshot.connectionState) {
+                    // when stream does not contain any value -> no note
                     case ConnectionState.waiting:
-                      return const Text('Waiting for all notes...');
+                    // when at least one note has been returned by stream
+                    case ConnectionState.active:
+                      return const Text('No note has been created yet...');
                     default:
-                      return const CircularProgressIndicator();
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                   }
                 },
               );
             default:
-              return const CircularProgressIndicator();
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
           }
         },
       ),
