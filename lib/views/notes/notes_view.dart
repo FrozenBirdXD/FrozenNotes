@@ -16,18 +16,11 @@ class _NotesViewState extends State<NotesView> {
 
   late final NotesService _notesService;
 
-  // open db when notesView widget is inserted into widget tree for the first time
+  // get singleton when notesView widget is inserted into widget tree for the first time
   @override
   void initState() {
     _notesService = NotesService();
     super.initState();
-  }
-
-  // close db when notesView widget is removed from widget tree
-  @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
   }
 
   @override
@@ -90,7 +83,27 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.waiting:
                     // when at least one note has been returned by stream
                     case ConnectionState.active:
-                      return const Text('No note has been created yet...');
+                      if (snapshot.hasData) {
+                        final allNotes = snapshot.data as List<DatabaseNote>;
+                        return ListView.builder(
+                          itemCount: allNotes.length,
+                          itemBuilder: (context, index) {
+                            final note = allNotes[index];
+                            return ListTile(
+                              title: Text(
+                                note.text,
+                                maxLines: 1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                     default:
                       return const Center(
                         child: CircularProgressIndicator(),
