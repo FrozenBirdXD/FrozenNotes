@@ -36,15 +36,21 @@ class NotesService {
   List<DatabaseNote> _notes = [];
 
   // controller
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   // getter for all notes
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   // singleton for notesservice
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  // in constructor
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() => _shared;
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
