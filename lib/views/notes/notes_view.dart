@@ -3,6 +3,8 @@ import 'package:frozennotes/constants/routes.dart';
 import 'package:frozennotes/enums/menu_action.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/services/crud/notes_service.dart';
+import 'package:frozennotes/utils/dialogs/sign_out_dialog.dart';
+import 'package:frozennotes/views/notes/notes_list_view.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -79,26 +81,28 @@ class _NotesViewState extends State<NotesView> {
                   snapshot,
                 ) {
                   switch (snapshot.connectionState) {
-                    // when stream does not contain any value -> no note
+                    // when stream does not contain any value
                     case ConnectionState.waiting:
                     // when at least one note has been returned by stream
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index];
-                            return ListTile(
-                              title: Text(
-                                note.text,
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                          },
-                        );
+                        if (allNotes.isEmpty) {
+                          return const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Ready to start taking notes? \nCreate your first one now!',
+                              style: TextStyle(fontSize: 30),
+                            ),
+                          );
+                        } else {
+                          return NotesListView(
+                            notes: allNotes,
+                            onDeleteNote: (note) async {
+                              await _notesService.deleteNote(id: note.id);
+                            },
+                          );
+                        }
                       } else {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -120,32 +124,4 @@ class _NotesViewState extends State<NotesView> {
       ),
     );
   }
-}
-
-Future<bool> showSignOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Sign out'),
-        content: const Text('Are you sure you want to sign out?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: const Text('Sign out'),
-          ),
-        ],
-      );
-    },
-  ).then(
-    (value) => value ?? false,
-  );
 }
