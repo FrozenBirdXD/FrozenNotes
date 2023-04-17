@@ -94,11 +94,8 @@ class _NewNoteViewState extends State<NewNoteView> {
           switch (snapshot.connectionState) {
             // when new note has been created
             case ConnectionState.done:
-              print('1');
               _note = snapshot.data as DatabaseNote;
-              print('2');
               _setupTextControllerListener();
-              print('3');
               return TextField(
                 controller: _textController,
                 keyboardType: TextInputType.multiline,
