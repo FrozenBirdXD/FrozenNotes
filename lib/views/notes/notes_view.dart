@@ -31,13 +31,15 @@ class _NotesViewState extends State<NotesView> {
       appBar: AppBar(
         title: const Text('Your Notes'),
         actions: [
+          // add note button
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(newNoteRoute);
+              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
             },
             icon: const Icon(Icons.add),
             tooltip: 'Add new note',
           ),
+          // menu button
           PopupMenuButton<MenuButtons>(
             onSelected: (value) async {
               switch (value) {
@@ -92,14 +94,23 @@ class _NotesViewState extends State<NotesView> {
                             fit: BoxFit.scaleDown,
                             child: Text(
                               'Ready to start taking notes? \nCreate your first one now!',
-                              style: TextStyle(fontSize: 30),
+                              style: TextStyle(fontSize: 20),
                             ),
                           );
                         } else {
+                          // list of all notes
                           return NotesListView(
                             notes: allNotes,
+                            // delete button
                             onDeleteNote: (note) async {
                               await _notesService.deleteNote(id: note.id);
+                            },
+                            // tap on note
+                            onTap: (note) {
+                              Navigator.of(context).pushNamed(
+                                createOrUpdateNoteRoute,
+                                arguments: note,
+                              );
                             },
                           );
                         }
