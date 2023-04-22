@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frozennotes/constants/routes.dart';
+import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';

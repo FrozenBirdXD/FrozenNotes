@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frozennotes/constants/routes.dart';
+import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/enums/menu_action.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/services/crud/notes_service.dart';

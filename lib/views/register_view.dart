@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frozennotes/constants/routes.dart';
+import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/services/auth/auth_exceptions.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/utils/dialogs/error_dialog.dart';
