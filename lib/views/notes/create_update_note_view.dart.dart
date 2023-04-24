@@ -3,6 +3,8 @@ import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/utils/generics/get_arguments.dart';
 import 'package:frozennotes/services/cloud/cloud_note.dart';
 import 'package:frozennotes/services/cloud/cloud_storage_firebase_service.dart';
+import 'package:frozennotes/utils/dialogs/cannot_share_empty_note_dialog.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CreateUpdateNoteView extends StatefulWidget {
   const CreateUpdateNoteView({super.key});
@@ -97,6 +99,20 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          // share button
+          IconButton(
+            onPressed: () async {
+              final text = _textController.text;
+              if (_note == null || text.isEmpty) {
+                await showCannotShareEmptyNoteDialog(context);
+              } else {
+                Share.share(text);
+              }
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ],
         title: const Text('New Note'),
       ),
       body: FutureBuilder(
