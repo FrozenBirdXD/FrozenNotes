@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frozennotes/services/cloud/cloud_note.dart';
+import 'package:frozennotes/services/cloud/cloud_storage_firebase_service.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/enums/menu_action.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
-import 'package:frozennotes/services/crud/notes_service.dart';
 import 'package:frozennotes/utils/dialogs/sign_out_dialog.dart';
 import 'package:frozennotes/views/notes/notes_list_view.dart';
 
@@ -14,14 +15,15 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-  String get userEmail => AuthService.firebase().currentUser!.email;
+  //current user id
+  String get userId => AuthService.firebase().currentUser!.id;
 
-  late final NotesService _notesService;
+  late final CloudStorageFirebaseService _notesService;
 
   // get singleton when notesView widget is inserted into widget tree for the first time
   @override
   void initState() {
-    _notesService = NotesService();
+    _notesService = CloudStorageFirebaseService();
     super.initState();
   }
 
@@ -67,65 +69,49 @@ class _NotesViewState extends State<NotesView> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: _notesService.getOrCreateUser(email: userEmail),
+      body: StreamBuilder(
+        stream: _notesService.allNotes(ownerUserId: userId),
         builder: (
           context,
           snapshot,
         ) {
           switch (snapshot.connectionState) {
-            // when user is created or retrieved
-            case ConnectionState.done:
-              return StreamBuilder(
-                stream: _notesService.allNotes,
-                builder: (
-                  context,
-                  snapshot,
-                ) {
-                  switch (snapshot.connectionState) {
-                    // when stream does not contain any value
-                    case ConnectionState.waiting:
-                    // when at least one note has been returned by stream
-                    case ConnectionState.active:
-                      if (snapshot.hasData) {
-                        final allNotes = snapshot.data as List<DatabaseNote>;
-                        if (allNotes.isEmpty) {
-                          return const FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'Ready to start taking notes? \nCreate your first one now!',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          );
-                        } else {
-                          // list of all notes
-                          return NotesListView(
-                            notes: allNotes,
-                            // delete button
-                            onDeleteNote: (note) async {
-                              await _notesService.deleteNote(id: note.id);
-                            },
-                            // tap on note
-                            onTap: (note) {
-                              Navigator.of(context).pushNamed(
-                                createOrUpdateNoteRoute,
-                                arguments: note,
-                              );
-                            },
-                          );
-                        }
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    default:
-                      return const Center(
-                        child: CircularProgressIndicator(),
+            // when stream does not contain any value
+            case ConnectionState.waiting:
+            // when at least one note has been returned by stream
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allNotes = snapshot.data as Iterable<CloudNote>;
+                if (allNotes.isEmpty) {
+                  return const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Ready to start taking notes? \nCreate your first one now!',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  );
+                } else {
+                  // list of all notes
+                  return NotesListView(
+                    notes: allNotes,
+                    // delete button
+                    onDeleteNote: (note) async {
+                      await _notesService.deleteNote(documentId: note.documentId);
+                    },
+                    // tap on note
+                    onTap: (note) {
+                      Navigator.of(context).pushNamed(
+                        createOrUpdateNoteRoute,
+                        arguments: note,
                       );
-                  }
-                },
-              );
+                    },
+                  );
+                }
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             default:
               return const Center(
                 child: CircularProgressIndicator(),
