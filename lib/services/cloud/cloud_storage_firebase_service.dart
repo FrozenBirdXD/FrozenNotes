@@ -3,9 +3,15 @@ import 'package:frozennotes/services/cloud/cloud_note.dart';
 import 'package:frozennotes/services/cloud/cloud_storage_constants.dart';
 import 'package:frozennotes/services/cloud/cloud_storage_exceptions.dart';
 
-class CloudStorageFirebase {
+class CloudStorageFirebaseService {
   // get all notes from firebase
   final notes = FirebaseFirestore.instance.collection('notes');
+
+  // singleton for storage
+  static final CloudStorageFirebaseService _shared =
+      CloudStorageFirebaseService._sharedInstance();
+  CloudStorageFirebaseService._sharedInstance();
+  factory CloudStorageFirebaseService() => _shared;
 
   Stream<Iterable<CloudNote>> allNotes({required String ownerUserId}) {
     return notes.snapshots().map(
@@ -42,17 +48,17 @@ class CloudStorageFirebase {
     }
   }
 
-  // singleton for storage
-  static final CloudStorageFirebase _shared =
-      CloudStorageFirebase._sharedInstance();
-  CloudStorageFirebase._sharedInstance();
-  factory CloudStorageFirebase() => _shared;
-
-  void createNewNote({required String ownerUserId}) async {
-    await notes.add({
+  Future<CloudNote> createNewNote({required String ownerUserId}) async {
+    final doc = await notes.add({
       ownerUserIdFieldName: ownerUserId,
       textFieldName: '',
     });
+    final note = await doc.get();
+    return CloudNote(
+      documentId: note.id,
+      ownerUserId: ownerUserId,
+      text: '',
+    );
   }
 
   Future<Iterable<CloudNote>> getNotes({required String ownerUserId}) async {
@@ -69,11 +75,7 @@ class CloudStorageFirebase {
         (value) {
           return value.docs.map(
             (doc) {
-              return CloudNote(
-                documentId: doc.id,
-                ownerUserId: doc.data()[ownerUserIdFieldName] as String,
-                text: doc.data()[textFieldName] as String,
-              );
+              return CloudNote.fromSnapshot(doc);
             },
           );
         },
