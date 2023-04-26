@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/cloud/cloud_note.dart';
 import 'package:frozennotes/services/cloud/cloud_storage_firebase_service.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
@@ -45,13 +47,12 @@ class _NotesViewState extends State<NotesView> {
           PopupMenuButton<MenuButtons>(
             onSelected: (value) async {
               switch (value) {
+                // logout button
                 case MenuButtons.logout:
                   final logout = await showSignOutDialog(context);
                   if (logout) {
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (_) => false,
+                    BlocProvider.of<AuthBloc>(context).add(
+                      const AuthLogoutEvent(),
                     );
                   }
                   break;
@@ -96,7 +97,8 @@ class _NotesViewState extends State<NotesView> {
                     notes: allNotes,
                     // delete button
                     onDeleteNote: (note) async {
-                      await _notesService.deleteNote(documentId: note.documentId);
+                      await _notesService.deleteNote(
+                          documentId: note.documentId);
                     },
                     // tap on note
                     onTap: (note) {
