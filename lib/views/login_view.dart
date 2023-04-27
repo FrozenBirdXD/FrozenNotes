@@ -57,12 +57,37 @@ class _LoginViewState extends State<LoginView> {
               hintText: 'Enter your password here',
             ),
           ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async {
+              if (state is AuthLoggedOutState) {
+                if (state.exception is UserNotFoundAuthException) {
+                  await showErrorDialog(
+                    context,
+                    'User not found - Please sign in or register a new account.',
+                  );
+                } else if (state.exception is WrongPasswordAuthException) {
+                  await showErrorDialog(
+                    context,
+                    'Incorrect credentials - Please try again.',
+                  );
+                } else if (state.exception is InvalidEmailAuthException) {
+                  await showErrorDialog(
+                    context,
+                    'Invalid email - Please enter a valid email address.',
+                  );
+                } else if (state.exception is GenericAuthException) {
+                  await showErrorDialog(
+                    context,
+                    'Authentication error',
+                  );
+                }
+              }
+            },
+            child: TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
 
-              try {
                 // login
                 BlocProvider.of<AuthBloc>(context).add(
                   AuthLoginEvent(
@@ -70,30 +95,9 @@ class _LoginViewState extends State<LoginView> {
                     password,
                   ),
                 );
-                // todo: fix exceptions
-              } on UserNotFoundAuthException {
-                await showErrorDialog(
-                  context,
-                  'User not found - Please sign in or register a new account',
-                );
-              } on WrongPasswordAuthException {
-                await showErrorDialog(
-                  context,
-                  'Incorrect Password - Please try again.',
-                );
-              } on InvalidEmailAuthException {
-                await showErrorDialog(
-                  context,
-                  'Invalid email - Please enter a valid email address.',
-                );
-              } on GenericAuthException {
-                await showErrorDialog(
-                  context,
-                  'Authentication error',
-                );
-              }
-            },
-            child: const Text('Login'),
+              },
+              child: const Text('Login'),
+            ),
           ),
           TextButton(
             onPressed: () {
