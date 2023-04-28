@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/auth/firebase_auth_provider.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
+import 'package:frozennotes/utils/loading/loading_screen.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';
 import 'package:frozennotes/views/notes/notes_view.dart';
@@ -49,7 +50,17 @@ class HomePage extends StatelessWidget {
     BlocProvider.of<AuthBloc>(context).add(const AuthInitEvent());
     // check state of builder all the time
     // if state change in e.g. login view, this is called
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? "In a moment, we'll be ready.",
+          );
+        } else {
+          LoadingScreen().hide();
+        }
+      },
       builder: (context, state) {
         if (state is AuthLoggedInState) {
           return const NotesView();
