@@ -61,48 +61,55 @@ class _RegisterViewState extends State<RegisterView> {
         appBar: AppBar(
           title: const Text('Register'),
         ),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              enableSuggestions: false,
-              decoration: const InputDecoration(
-                hintText: 'Enter your email here',
+        body: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _email,
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                enableSuggestions: false,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your email here',
+                ),
               ),
-            ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                hintText: 'Enter your password here',
+              TextField(
+                controller: _password,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your password here',
+                ),
               ),
-            ),
-            // register button
-            TextButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
-                BlocProvider.of<AuthBloc>(context).add(
-                  AuthRegisterEvent(
-                    email,
-                    password,
-                  ),
-                );
-              },
-              child: const Text('Register'),
-            ),
-            // go to login view button
-            TextButton(
-              onPressed: () {
-                BlocProvider.of<AuthBloc>(context).add(const AuthLogoutEvent());
-              },
-              child: const Text('Already registered? Login here!'),
-            ),
-          ],
+              const SizedBox(
+                height: 16.0,
+              ),
+              // register button
+              ElevatedButton(
+                onPressed: () async {
+                  final email = _email.text;
+                  final password = _password.text;
+                  BlocProvider.of<AuthBloc>(context).add(
+                    AuthRegisterEvent(
+                      email,
+                      password,
+                    ),
+                  );
+                },
+                child: const Text('Register'),
+              ),
+              // go to login view button
+              ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<AuthBloc>(context)
+                      .add(const AuthLogoutEvent());
+                },
+                child: const Text('Already registered? Login here!'),
+              ),
+            ],
+          ),
         ),
       ),
     );
