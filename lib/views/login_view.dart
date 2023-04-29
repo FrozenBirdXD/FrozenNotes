@@ -58,62 +58,69 @@ class _LoginViewState extends State<LoginView> {
           }
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Column(
-            children: [
-              // email text field
-              TextField(
-                controller: _email,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                enableSuggestions: false,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your email here',
+      child: GestureDetector(
+        onTap: () {
+          // Hide the keyboard when the user taps outside of the TextFields
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Login'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Column(
+              children: [
+                // email text field
+                TextField(
+                  controller: _email,
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  enableSuggestions: false,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your email here',
+                  ),
                 ),
-              ),
-              // password text field
-              TextField(
-                controller: _password,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your password here',
+                // password text field
+                TextField(
+                  controller: _password,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your password here',
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              // login button   
-              ElevatedButton(
-                onPressed: () async {
-                  final email = _email.text;
-                  final password = _password.text;
-                    
-                  // login
-                  BlocProvider.of<AuthBloc>(context).add(
-                    AuthLoginEvent(
-                      email,
-                      password,
-                    ),
-                  );
-                },
-                child: const Text('Login'),
-              ),
-              // Go to register view button
-              ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<AuthBloc>(context)
-                      .add(const AuthShouldRegisterEvent());
-                },
-                child: const Text('Not registered yet? Register here!'),
-              ),
-            ],
+                const SizedBox(
+                  height: 16.0,
+                ),
+                // login button   
+                ElevatedButton(
+                  onPressed: () async {
+                    final email = _email.text;
+                    final password = _password.text;
+                      
+                    // login
+                    BlocProvider.of<AuthBloc>(context).add(
+                      AuthLoginEvent(
+                        email,
+                        password,
+                      ),
+                    );
+                    FocusScope.of(context).unfocus(); // hide keyboard
+                  },
+                  child: const Text('Login'),
+                ),
+                // Go to register view button
+                ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(const AuthShouldRegisterEvent());
+                  },
+                  child: const Text('Not registered yet? Register here!'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
