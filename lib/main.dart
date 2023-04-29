@@ -6,6 +6,7 @@ import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/auth/firebase_auth_provider.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/utils/loading/loading_screen.dart';
+import 'package:frozennotes/views/forgot_password_view.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';
 import 'package:frozennotes/views/notes/notes_view.dart';
@@ -48,7 +49,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // initialize
     BlocProvider.of<AuthBloc>(context).add(const AuthInitEvent());
-    // check state of builder all the time
+    // check state of builder all the time ---> also checks if state has isLoading true
     // if state change in e.g. login view, this is called
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -70,6 +71,8 @@ class HomePage extends StatelessWidget {
           return const LoginView();
         } else if (state is AuthRegisteringState) {
           return const RegisterView();
+        } else if (state is AuthForgotPasswordState) {
+          return const ForgotPasswordView();
         } else {
           return const Scaffold(
             body: Center(
