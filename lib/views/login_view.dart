@@ -53,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
           } else if (state.exception is GenericAuthException) {
             await showErrorDialog(
               context,
-              'Authentication error',
+              'Authentication error - Please try again.',
             );
           }
         }
@@ -64,6 +64,7 @@ class _LoginViewState extends State<LoginView> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Login'),
           ),
@@ -71,6 +72,13 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.all(40.0),
             child: Column(
               children: [
+                const Text(
+                  'Please log in to your acount to access your FrozenNotes Profile!',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
                 // email text field
                 TextField(
                   controller: _email,
@@ -94,12 +102,13 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(
                   height: 16.0,
                 ),
-                // login button   
+                // login button
                 ElevatedButton(
                   onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
-                      
+        
+                    FocusScope.of(context).unfocus(); // hide keyboard
                     // login
                     BlocProvider.of<AuthBloc>(context).add(
                       AuthLoginEvent(
@@ -107,9 +116,16 @@ class _LoginViewState extends State<LoginView> {
                         password,
                       ),
                     );
-                    FocusScope.of(context).unfocus(); // hide keyboard
                   },
                   child: const Text('Login'),
+                ),
+                // Forgot password
+                ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(const AuthForgotPasswordEvent());
+                  },
+                  child: const Text('I forgot my password'),
                 ),
                 // Go to register view button
                 ElevatedButton(

@@ -63,6 +63,7 @@ class _RegisterViewState extends State<RegisterView> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('Register'),
           ),
@@ -70,6 +71,13 @@ class _RegisterViewState extends State<RegisterView> {
             padding: const EdgeInsets.all(40.0),
             child: Column(
               children: [
+                const Text(
+                  "Register now to access all features in FrozenNotes. It's free and only takes a minute!",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
                 TextField(
                   controller: _email,
                   autocorrect: false,
@@ -96,13 +104,14 @@ class _RegisterViewState extends State<RegisterView> {
                   onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
+
+                    FocusScope.of(context).unfocus(); // hide keyboard
                     BlocProvider.of<AuthBloc>(context).add(
                       AuthRegisterEvent(
                         email,
                         password,
                       ),
                     );
-                    FocusScope.of(context).unfocus(); // hide keyboard
                   },
                   child: const Text('Register'),
                 ),
