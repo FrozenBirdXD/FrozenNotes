@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/cloud/cloud_note.dart';
 import 'package:frozennotes/services/cloud/cloud_storage_firebase_service.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
-import 'package:frozennotes/enums/menu_action.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
-import 'package:frozennotes/utils/dialogs/sign_out_dialog.dart';
 import 'package:frozennotes/views/notes/notes_list_view.dart';
 
 class NotesView extends StatefulWidget {
@@ -35,41 +31,48 @@ class _NotesViewState extends State<NotesView> {
       appBar: AppBar(
         title: const Text('Your Notes'),
         centerTitle: true,
-        actions: [
-          // add note button
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
-            },
-            icon: const Icon(Icons.add),
-            tooltip: 'Add new note',
-          ),
-          // menu button
-          PopupMenuButton<MenuButtons>(
-            onSelected: (value) async {
-              switch (value) {
-                // logout button
-                case MenuButtons.logout:
-                  final logout = await showSignOutDialog(context);
-                  if (logout) {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      const AuthLogoutEvent(),
-                    );
-                  }
-                  break;
-              }
-            },
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem<MenuButtons>(
-                  value: MenuButtons.logout,
-                  child: Text('Sign out'),
-                ),
-              ];
-            },
-            tooltip: 'Settings',
-          ),
-        ],
+        // actions: [
+        //   // add note button
+        //   IconButton(
+        //     onPressed: () {
+        //       Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+        //     },
+        //     icon: const Icon(Icons.add),
+        //     tooltip: 'Add new note',
+        //   ),
+        //   // menu button
+        //   PopupMenuButton<MenuButtons>(
+        //     onSelected: (value) async {
+        //       switch (value) {
+        //         // logout button
+        //         case MenuButtons.logout:
+        //           final logout = await showSignOutDialog(context);
+        //           if (logout) {
+        //             BlocProvider.of<AuthBloc>(context).add(
+        //               const AuthLogoutEvent(),
+        //             );
+        //           }
+        //           break;
+        //       }
+        //     },
+        //     itemBuilder: (context) {
+        //       return [
+        //         const PopupMenuItem<MenuButtons>(
+        //           value: MenuButtons.logout,
+        //           child: Text('Sign out'),
+        //         ),
+        //       ];
+        //     },
+        //     tooltip: 'Settings',
+        //   ),
+        // ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+        },
+        backgroundColor: Colors.lightBlue.shade200,
+        child: const Icon(Icons.add),
       ),
       body: SafeArea(
         child: StreamBuilder(
