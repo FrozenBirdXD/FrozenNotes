@@ -206,7 +206,7 @@ class _LoginViewState extends State<LoginView> {
                                 .add(const AuthForgotPasswordEvent());
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[200],
+                            backgroundColor: Colors.lightBlue.shade200,
                             textStyle: const TextStyle(fontSize: 18.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
@@ -228,14 +228,14 @@ class _LoginViewState extends State<LoginView> {
                                 .add(const AuthShouldRegisterEvent());
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[200],
+                            backgroundColor: Colors.lightBlue.shade200,
                             textStyle: const TextStyle(fontSize: 18.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           child:
-                              const Text('Not registered yet? Register here!'),
+                              const Text('Not registered yet? Sign up here!'),
                         ),
                       ),
                     ],

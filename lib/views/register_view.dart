@@ -204,7 +204,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 .add(const AuthLogoutEvent());
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[200],
+                            backgroundColor: Colors.lightBlue.shade200,
                             textStyle: const TextStyle(fontSize: 18.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
