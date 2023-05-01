@@ -11,6 +11,8 @@ import 'package:frozennotes/views/forgot_password_view.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';
 import 'package:frozennotes/views/notes/notes_view.dart';
+import 'package:frozennotes/views/profile/change_password_view.dart';
+import 'package:frozennotes/views/profile/profile_view.dart';
 import 'package:frozennotes/views/register_view.dart';
 import 'package:frozennotes/views/verify_email_view.dart';
 
@@ -38,6 +40,8 @@ void main() {
       ),
       routes: {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
+        changePasswordRoute: (context) => const ChangePasswordView(),
+        notesRoute: (context) => const NotesView(),
       },
     ),
   );
@@ -67,10 +71,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // index of navigator selection
   int _currentIndex = 0;
+  // list of views for navigator
   final List<Widget> _views = [
     const NotesView(),
     const DrawableView(),
+    const ProfileView(),
   ];
 
   @override
@@ -109,7 +116,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.brush),
-                  label: 'Drawable',
+                  label: 'Drawables',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
                 ),
               ],
             ),
@@ -122,6 +133,8 @@ class _HomePageState extends State<HomePage> {
           return const RegisterView();
         } else if (state is AuthForgotPasswordState) {
           return const ForgotPasswordView();
+        } else if (state is AuthChangePasswordState) {
+          return const ChangePasswordView();
         } else {
           return const Scaffold(
             body: Center(
