@@ -6,6 +6,7 @@ import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/auth/firebase_auth_provider.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/utils/loading/loading_screen.dart';
+import 'package:frozennotes/views/drawable/drawables_view.dart';
 import 'package:frozennotes/views/forgot_password_view.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';
@@ -58,8 +59,19 @@ MaterialColor getMaterialColor(Color color) {
   return MaterialColor(color.value, shades);
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+  final List<Widget> _views = [
+    const NotesView(),
+    const DrawableView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +92,28 @@ class HomePage extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AuthLoggedInState) {
-          return const NotesView();
+          // return correct view
+          return Scaffold(
+            body: _views[_currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notes),
+                  label: 'Notes',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.brush),
+                  label: 'Drawable',
+                ),
+              ],
+            ),
+          );
         } else if (state is AuthNeedVerificationState) {
           return const VerifyEmailView();
         } else if (state is AuthLoggedOutState) {
