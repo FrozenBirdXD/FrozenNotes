@@ -124,4 +124,22 @@ class FirebaseAuthProvider implements AuthProvider {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
+
+  @override
+  Future<void> changePassword({required String newPassword}) async {
+    try {
+      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'weak-password':
+          throw WeakPasswordAuthException();
+        case 'requires-recent-login':
+          throw RequiresRecentLogin();
+        default:
+          throw GenericAuthException();
+      }
+    } catch (e) {
+      throw GenericAuthException();
+    }
+  }
 }

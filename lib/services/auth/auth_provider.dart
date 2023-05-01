@@ -20,4 +20,6 @@ abstract class AuthProvider {
   Future<void> initialize();
 
   Future<void> sendPasswordReset({required String email});
+
+  Future<void> changePassword({required String newPassword});
 }
