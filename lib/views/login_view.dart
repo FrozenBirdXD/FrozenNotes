@@ -109,7 +109,8 @@ class _LoginViewState extends State<LoginView> {
                         keyboardType: TextInputType.emailAddress,
                         enableSuggestions: false,
                         decoration: InputDecoration(
-                          hintText: 'Email',
+                          labelText: 'Email',
+                          labelStyle: const TextStyle(fontSize: 16.0),
                           filled: true,
                           fillColor: Colors.grey[250],
                           border: OutlineInputBorder(
@@ -139,7 +140,8 @@ class _LoginViewState extends State<LoginView> {
                         enableSuggestions: false,
                         autocorrect: false,
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          labelText: 'Password',
+                          labelStyle: const TextStyle(fontSize: 16.0),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _passwordVisible

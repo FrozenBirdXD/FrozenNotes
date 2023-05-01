@@ -82,9 +82,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       keyboardType: TextInputType.emailAddress,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: 'Email',
                         filled: true,
                         fillColor: Colors.grey[250],
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(fontSize: 16.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
                           borderSide: BorderSide(
