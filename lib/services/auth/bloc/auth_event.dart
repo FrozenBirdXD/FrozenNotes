@@ -43,3 +43,8 @@ class AuthForgotPasswordEvent extends AuthEvent {
   final String? email;
   const AuthForgotPasswordEvent({this.email});
 }
+
+class AuthChangePasswordEvent extends AuthEvent {
+  final String? newPassword;
+  const AuthChangePasswordEvent({required this.newPassword});
+}
