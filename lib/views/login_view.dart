@@ -14,6 +14,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -65,77 +66,180 @@ class _LoginViewState extends State<LoginView> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: const Text('Login'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: Column(
-              children: [
-                const Text(
-                  'Please log in to your acount to access your FrozenNotes Profile!',
-                  style: TextStyle(fontSize: 20.0),
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36.0,
+                  vertical: 48.0,
                 ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                // email text field
-                TextField(
-                  controller: _email,
-                  autocorrect: false,
-                  keyboardType: TextInputType.emailAddress,
-                  enableSuggestions: false,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your email here',
-                  ),
-                ),
-                // password text field
-                TextField(
-                  controller: _password,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your password here',
-                  ),
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                // login button
-                ElevatedButton(
-                  onPressed: () async {
-                    final email = _email.text;
-                    final password = _password.text;
-        
-                    FocusScope.of(context).unfocus(); // hide keyboard
-                    // login
-                    BlocProvider.of<AuthBloc>(context).add(
-                      AuthLoginEvent(
-                        email,
-                        password,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Welcome back!',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                    );
-                  },
-                  child: const Text('Login'),
+                    ),
+                    const SizedBox(
+                      height: 24.0,
+                    ),
+                    const Text(
+                      'Please log in to your acount to access your FrozenNotes Profile!',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    // email text field
+                    TextFormField(
+                      controller: _email,
+                      autocorrect: false,
+                      keyboardType: TextInputType.emailAddress,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        filled: true,
+                        fillColor: Colors.grey[250],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey[300]!,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue[300]!,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    // password text field
+                    TextFormField(
+                      controller: _password,
+                      obscureText: !_passwordVisible,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[250],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey[300]!,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue[300]!,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    // login button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48.0,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final email = _email.text;
+                          final password = _password.text;
+
+                          FocusScope.of(context).unfocus(); // hide keyboard
+                          // login
+                          BlocProvider.of<AuthBloc>(context).add(
+                            AuthLoginEvent(
+                              email,
+                              password,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[400],
+                          textStyle: const TextStyle(fontSize: 18.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text('Log In'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    // Forgot password
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48.0,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(const AuthForgotPasswordEvent());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[200],
+                          textStyle: const TextStyle(fontSize: 18.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text('Forgot Password?'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    // Go to register view button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48.0,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(const AuthShouldRegisterEvent());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[200],
+                          textStyle: const TextStyle(fontSize: 18.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text('Not registered yet? Register here!'),
+                      ),
+                    ),
+                  ],
                 ),
-                // Forgot password
-                ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(const AuthForgotPasswordEvent());
-                  },
-                  child: const Text('I forgot my password'),
-                ),
-                // Go to register view button
-                ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(const AuthShouldRegisterEvent());
-                  },
-                  child: const Text('Not registered yet? Register here!'),
-                ),
-              ],
+              ),
             ),
           ),
         ),
