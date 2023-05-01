@@ -37,6 +37,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state);
     });
 
+    // change password event
+    on<AuthChangePasswordEvent>((event, emit) async {
+      emit(
+        const AuthChangePasswordState(
+          isLoading: false,
+          hasChangedPassword: false,
+          exception: null,
+        ),
+      );
+      final password = event.newPassword;
+      if (password == null) {
+        return;
+      }
+
+      try {
+        await provider.changePassword(newPassword: password);
+        emit(
+          const AuthChangePasswordState(
+            isLoading: false,
+            exception: null,
+            hasChangedPassword: true,
+          ),
+        );
+      } on Exception catch (e) {
+        emit(AuthChangePasswordState(
+          exception: e,
+          isLoading: false,
+          hasChangedPassword: false,
+        ));
+      }
+    });
+
     // register event
     on<AuthRegisterEvent>((event, emit) async {
       final email = event.email;
