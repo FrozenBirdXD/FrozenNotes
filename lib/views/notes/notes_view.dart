@@ -34,6 +34,7 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Notes'),
+        centerTitle: true,
         actions: [
           // add note button
           IconButton(
@@ -70,56 +71,61 @@ class _NotesViewState extends State<NotesView> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: _notesService.allNotes(ownerUserId: userId),
-        builder: (
-          context,
-          snapshot,
-        ) {
-          switch (snapshot.connectionState) {
-            // when stream does not contain any value
-            case ConnectionState.waiting:
-            // when at least one note has been returned by stream
-            case ConnectionState.active:
-              if (snapshot.hasData) {
-                final allNotes = snapshot.data as Iterable<CloudNote>;
-                if (allNotes.isEmpty) {
-                  return const FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      'Ready to start taking notes? \nCreate your first one now!',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  );
-                } else {
-                  // list of all notes
-                  return NotesListView(
-                    notes: allNotes,
-                    // delete button
-                    onDeleteNote: (note) async {
-                      await _notesService.deleteNote(
-                          documentId: note.documentId);
-                    },
-                    // tap on note
-                    onTap: (note) {
-                      Navigator.of(context).pushNamed(
-                        createOrUpdateNoteRoute,
-                        arguments: note,
-                      );
-                    },
-                  );
-                }
-              } else {
+      body: SafeArea(
+        child: StreamBuilder(
+          stream: _notesService.allNotes(ownerUserId: userId),
+          builder: (
+            context,
+            snapshot,
+          ) {
+            switch (snapshot.connectionState) {
+              // when stream does not contain any value
+              case ConnectionState.waiting:
+                // when at least one note has been returned by stream
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }
-            default:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-          }
-        },
+              case ConnectionState.active:
+                if (snapshot.hasData) {
+                  final allNotes = snapshot.data as Iterable<CloudNote>;
+                  if (allNotes.isEmpty) {
+                    return const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Ready to start taking notes? \nCreate your first one now!',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    );
+                  } else {
+                    // list of all notes
+                    return NotesListView(
+                      notes: allNotes,
+                      // delete button
+                      onDeleteNote: (note) async {
+                        await _notesService.deleteNote(
+                            documentId: note.documentId);
+                      },
+                      // tap on note
+                      onTap: (note) {
+                        Navigator.of(context).pushNamed(
+                          createOrUpdateNoteRoute,
+                          arguments: note,
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              default:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+            }
+          },
+        ),
       ),
     );
   }
