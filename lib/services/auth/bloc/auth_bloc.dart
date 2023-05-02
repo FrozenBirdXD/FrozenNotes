@@ -31,6 +31,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<AuthGoToNotesEvent>((event, emit) {
+      emit(
+        AuthLoggedInState(
+          user: provider.currentUser!,
+          isLoading: false,
+        ),
+      );
+    });
+
     // send verification email
     on<AuthSendVerificationEmailEvent>((event, emit) async {
       await provider.sendEmailVerification();

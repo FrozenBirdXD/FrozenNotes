@@ -48,3 +48,8 @@ class AuthChangePasswordEvent extends AuthEvent {
   final String? newPassword;
   const AuthChangePasswordEvent({required this.newPassword});
 }
+
+// TODO: temp
+class AuthGoToNotesEvent extends AuthEvent {
+  const AuthGoToNotesEvent();
+}
