@@ -19,8 +19,15 @@ class ProfileView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Profile Options', style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 16),
+            const Text(
+              'Profile Options',
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
             ElevatedButton(
               onPressed: () {},
               child: const Text('Edit Profile'),

@@ -8,14 +8,20 @@ class DrawableView extends StatefulWidget {
 }
 
 class _DrawableViewState extends State<DrawableView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Drawable Notes'),
+        title: const Center(
+          child: Text('Your Drawable Notes'),
+        ),
       ),
-      body: const Text('Drawable View'),
+      body: const Center(
+        child: Text(
+          'Drawable View',
+          style: TextStyle(fontSize: 24.0),
+        ),
+      ),
     );
   }
 }

@@ -92,11 +92,21 @@ class _NotesViewState extends State<NotesView> {
                 if (snapshot.hasData) {
                   final allNotes = snapshot.data as Iterable<CloudNote>;
                   if (allNotes.isEmpty) {
-                    return const FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Ready to start taking notes? \nCreate your first one now!',
-                        style: TextStyle(fontSize: 20),
+                    return Center(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Column(
+                          children: const [
+                            Text(
+                              'Ready to start taking notes?',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              'Create your first one now!',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   } else {

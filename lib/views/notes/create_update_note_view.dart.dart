@@ -98,6 +98,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
           // share button
@@ -115,31 +117,53 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
         ],
         title: const Text('New Note'),
       ),
-      body: FutureBuilder(
-        future: createOrGetNote(context),
-        builder: (
-          context,
-          snapshot,
-        ) {
-          switch (snapshot.connectionState) {
-            // when new note has been created
-            case ConnectionState.done:
-              _setupTextControllerListener();
-              return TextField(
-                controller: _textController,
-                keyboardType: TextInputType.multiline,
-                // enable multiline textfield
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Write your note here...',
-                ),
-              );
-            default:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-          }
-        },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 36.0,
+              vertical: 48.0,
+            ),
+            child: FutureBuilder(
+              future: createOrGetNote(context),
+              builder: (
+                context,
+                snapshot,
+              ) {
+                switch (snapshot.connectionState) {
+                  // when new note has been created
+                  case ConnectionState.done:
+                    _setupTextControllerListener();
+                    return TextFormField(
+                      controller: _textController,
+                      keyboardType: TextInputType.multiline,
+                      // enable multiline textfield
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Note',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey[300]!,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(
+                            color: Colors.blue[300]!,
+                          ),
+                        ),
+                      ),
+                    );
+                  default:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                }
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
