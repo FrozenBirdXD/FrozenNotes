@@ -157,15 +157,29 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                           child: const Text('Update Password'),
                         ),
                       ),
-                      // TODO: add back button
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     BlocProvider.of<AuthBloc>(context).add(
-                      //       const AuthGoNotesEvent(),
-                      //     );
-                      //   },
-                      //   child: const Text('Go back'),
-                      // ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48.0,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            BlocProvider.of<AuthBloc>(context).add(
+                              const AuthGoToNotesEvent(),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue.shade200,
+                            textStyle: const TextStyle(fontSize: 18.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          child: const Text('Go back'),
+                        ),
+                      ),
                     ],
                   ),
                 ),
