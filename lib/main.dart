@@ -6,7 +6,8 @@ import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/auth/firebase_auth_provider.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/utils/loading/loading_screen.dart';
-import 'package:frozennotes/views/drawable/drawables_view.dart';
+import 'package:frozennotes/views/drawings/create_update_note_view.dart';
+import 'package:frozennotes/views/drawings/drawings_view.dart';
 import 'package:frozennotes/views/forgot_password_view.dart';
 import 'package:frozennotes/views/login_view.dart';
 import 'package:frozennotes/views/notes/create_update_note_view.dart.dart';
@@ -42,6 +43,8 @@ void main() {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
         changePasswordRoute: (context) => const ChangePasswordView(),
         notesRoute: (context) => const NotesView(),
+        createOrUpdateDrawingRoute: (context) =>
+            const CreateUpdateDrawingView(),
       },
     ),
   );
@@ -76,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   // list of views for navigator
   final List<Widget> _views = [
     const NotesView(),
-    const DrawableView(),
+    const DrawingsView(),
     const ProfileView(),
   ];
 
