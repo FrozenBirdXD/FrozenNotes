@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frozennotes/services/cloud/cloud_note.dart';
-import 'package:frozennotes/services/cloud/cloud_storage_firebase_service.dart';
+import 'package:frozennotes/services/cloud/cloud_notes_storage_service.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/services/auth/auth_service.dart';
 import 'package:frozennotes/views/notes/notes_list_view.dart';
