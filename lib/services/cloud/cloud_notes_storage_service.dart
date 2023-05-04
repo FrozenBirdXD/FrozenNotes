@@ -35,7 +35,7 @@ class CloudStorageFirebaseService {
     try {
       await notes.doc(documentId).delete();
     } catch (e) {
-      throw CouldNoteDeleteNote();
+      throw CouldNotDeleteNote();
     }
   }
 

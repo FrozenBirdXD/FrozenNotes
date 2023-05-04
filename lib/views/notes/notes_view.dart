@@ -29,7 +29,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes'),
+        title: const Text('My Notes'),
         centerTitle: true,
         // actions: [
         //   // add note button
@@ -84,7 +84,6 @@ class _NotesViewState extends State<NotesView> {
             switch (snapshot.connectionState) {
               // when stream does not contain any value
               case ConnectionState.waiting:
-                // when at least one note has been returned by stream
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
