@@ -61,7 +61,6 @@ class CloudDrawingStorageService {
       documentId: drawing.id,
       ownerUserId: ownerUserId,
       drawingData: const [],
-      metadata: const {},
     );
   }
 }
