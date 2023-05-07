@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class CreateUpdateDrawingView extends StatefulWidget {
@@ -111,4 +114,10 @@ class DrawingArea {
   Paint areaPaint;
 
   DrawingArea({required this.point, required this.areaPaint});
+}
+
+void saveDrawing(List<DrawingArea> points) async {
+  final file = File('drawing.json');
+  final jsonPoints = jsonEncode(points);
+  await file.writeAsString(jsonPoints);
 }
