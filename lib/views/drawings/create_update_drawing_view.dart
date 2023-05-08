@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CreateUpdateDrawingView extends StatefulWidget {
-  const CreateUpdateDrawingView({super.key});
+  final List<DrawingArea> points;
+
+  const CreateUpdateDrawingView({Key? key, required this.points})
+      : super(key: key);
 
   @override
   State<CreateUpdateDrawingView> createState() =>
@@ -16,6 +19,18 @@ class _CreateUpdateDrawingViewState extends State<CreateUpdateDrawingView> {
   late Offset lastPoint;
   late Offset startPoint;
   bool isDrawing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    points = widget.points;
+  }
+
+  @override
+  void dispose() {
+    saveDrawing(points);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,4 +135,27 @@ void saveDrawing(List<DrawingArea> points) async {
   final file = File('drawing.json');
   final jsonPoints = jsonEncode(points);
   await file.writeAsString(jsonPoints);
+}
+
+Future<List<DrawingArea>> readDrawing() async {
+  try {
+    final file = File('drawing.json');
+    if (!file.existsSync()) {
+      return [];
+    }
+    final contents = await file.readAsString();
+    final jsonPoints = jsonDecode(contents) as List<dynamic>;
+    final points = jsonPoints.map((e) {
+      final point = Offset(e['point'][0] as double, e['point'][1] as double);
+      final paint = Paint()
+        ..strokeCap = StrokeCap.round
+        ..isAntiAlias = true
+        ..color = Color(e['color'] as int)
+        ..strokeWidth = e['strokeWidth'] as double;
+      return DrawingArea(point: point, areaPaint: paint);
+    }).toList();
+    return points;
+  } catch (e) {
+    return [];
+  }
 }
