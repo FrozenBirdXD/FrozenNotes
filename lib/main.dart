@@ -6,6 +6,7 @@ import 'package:frozennotes/services/auth/bloc/auth_bloc.dart';
 import 'package:frozennotes/services/auth/firebase_auth_provider.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
 import 'package:frozennotes/utils/loading/loading_screen.dart';
+import 'package:frozennotes/views/drawings/create_update_drawing_view.dart';
 import 'package:frozennotes/views/drawings/drawings_view.dart';
 import 'package:frozennotes/views/forgot_password_view.dart';
 import 'package:frozennotes/views/login_view.dart';
@@ -42,6 +43,7 @@ void main() {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
         changePasswordRoute: (context) => const ChangePasswordView(),
         notesRoute: (context) => const NotesView(),
+        createOrUpdateDrawingRoute:(context) => const CreateUpdateDrawingView(),
       },
     ),
   );

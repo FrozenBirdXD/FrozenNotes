@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CreateUpdateDrawingView extends StatefulWidget {
-  final List<DrawingArea> points;
+  // final List<DrawingArea> points;
 
-  const CreateUpdateDrawingView({Key? key, required this.points})
+  const CreateUpdateDrawingView({Key? key})
       : super(key: key);
 
   @override
@@ -23,12 +23,12 @@ class _CreateUpdateDrawingViewState extends State<CreateUpdateDrawingView> {
   @override
   void initState() {
     super.initState();
-    points = widget.points;
+    // points = widget.points;
   }
 
   @override
   void dispose() {
-    saveDrawing(points);
+    // saveDrawing(points);
     super.dispose();
   }
 
