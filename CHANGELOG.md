@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Drawing feature
+
+### Fixed
+- Keyboard blocking text in big notes
+- Keyboard focus in note view
+
 ## [v1.0.1] - 03.05.2023
 
 ### Added
