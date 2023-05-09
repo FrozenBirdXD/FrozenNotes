@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v1.0.2-beta.1] - 09.05.2023
 
 ### Added
 - Drawing feature
@@ -14,7 +14,6 @@ All notable changes to this project will be documented in this file.
 ## [v1.0.1] - 03.05.2023
 
 ### Added
-
 - Cloud synchronization with notes
 - Note-taking feature
 - Share Note Button 
