@@ -83,7 +83,10 @@ class _DrawingsViewState extends State<DrawingsView> {
                   drawings: allDrawings,
                   // tap on drawing
                   onTap: (drawing) {
-                    Navigator.of(context).pushNamed(createOrUpdateDrawingRoute);
+                    Navigator.of(context).pushNamed(
+                      createOrUpdateDrawingRoute,
+                      arguments: drawing,
+                    );
                   },
                 );
               }
