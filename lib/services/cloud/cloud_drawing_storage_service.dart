@@ -28,15 +28,10 @@ class CloudDrawingStorageService {
   }
 
   Future<void> updateDrawing({
-    required String documentId,
-    required List<Map<String, dynamic>> drawingData,
-    required Map<String, dynamic> metadata,
+    required CloudDrawing drawing,
   }) async {
     try {
-      await drawings.doc(documentId).update({
-        drawingDataFieldName: drawingData,
-        metadataFieldName: metadata,
-      });
+      await drawings.doc(drawing.documentId).update(drawing.toMap());
     } catch (e) {
       throw CouldNotUpdateDrawing();
     }
@@ -54,7 +49,6 @@ class CloudDrawingStorageService {
     final doc = await drawings.add({
       ownerUserIdFieldName: ownerUserId,
       drawingDataFieldName: [],
-      metadataFieldName: {},
     });
     final drawing = await doc.get();
     return CloudDrawing(
