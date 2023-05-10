@@ -24,9 +24,17 @@ class DrawingsGridView extends StatelessWidget {
       itemCount: drawings.length,
       itemBuilder: (context, index) {
         final drawing = drawings.elementAt(index);
-        return GridTile(
-          header: const Text('Drawing'),
-          child: Image.network('https://via.placeholer.com/150'),
+        return GestureDetector(
+          onTap: () {
+            onTap(drawing);
+          },
+          child: const GridTile(
+            header: Text('Drawing'),
+            child: Icon(
+              Icons.photo,
+              size: 100,
+            ),
+          ),
         );
       },
     );
