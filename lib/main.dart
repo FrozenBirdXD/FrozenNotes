@@ -16,6 +16,7 @@ import 'package:frozennotes/views/profile/change_password_view.dart';
 import 'package:frozennotes/views/profile/profile_view.dart';
 import 'package:frozennotes/views/register_view.dart';
 import 'package:frozennotes/views/verify_email_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,9 @@ void main() {
 
   runApp(
     MaterialApp(
-      title: 'Frozennotes',
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      title: 'FrozenNotes',
       theme: ThemeData(
         primarySwatch: getMaterialColor(Colors.lightBlue.shade200),
       ),

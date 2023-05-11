@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frozennotes/extensions/buildcontext/loc.dart';
 import 'package:frozennotes/services/cloud/cloud_note.dart';
 import 'package:frozennotes/services/cloud/cloud_notes_storage_service.dart';
 import 'package:frozennotes/utils/constants/routes.dart';
@@ -29,7 +30,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Notes'),
+        title: Text(context.loc.notes_title),
         centerTitle: true,
         // actions: [
         //   // add note button
