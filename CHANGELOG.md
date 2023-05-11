@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Added
+- German (DE) and English (EN) language options
+
 ## [v1.0.2-beta.1] - 09.05.2023
 
 ### Added
